@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import BasicRating from "./BasicRating";
 import Box from "@mui/material/Box";
@@ -20,7 +21,8 @@ export default function Form() {
   const [rating, setRating] = useState(1);
   const [comments, setComments] = useState("");
   const [yesOrNo, setYesOrNo] = useState("");
-  // const [no, setNo] = useState();
+
+  const navigate = useNavigate();
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
@@ -32,6 +34,7 @@ export default function Form() {
       rating,
       yesOrNo,
       comments,
+      accepted: "",
     };
     setName("");
     setMobile("");
@@ -40,6 +43,8 @@ export default function Form() {
     setYesOrNo("");
     localStorage.setItem("inputs", JSON.stringify([...inputs, newInputs]));
     console.log(inputs);
+    // navigate("/AdminPage");
+    navigate("/AdminTable");
   };
   return (
     <div>
