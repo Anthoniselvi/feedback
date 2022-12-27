@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 import "./App.css";
 import Rating from "@mui/material/Rating";
 
@@ -29,6 +30,7 @@ export default function AdminTable() {
           yesOrNo: singleValue.yesOrNo,
           comments: singleValue.comments,
           accepted: value,
+          editOrDelete: "",
         };
       } else {
         return singleValue;
@@ -37,6 +39,14 @@ export default function AdminTable() {
 
     setInputs(updatedArray);
     localStorage.setItem("inputs", JSON.stringify(updatedArray));
+  };
+
+  const deleteRow = (id) => {
+    const filteredRow = inputs.filter((input) => {
+      return input.id !== id;
+    });
+    setInputs(filteredRow);
+    localStorage.setItem("inputs", JSON.stringify(filteredRow));
   };
 
   return (
@@ -51,6 +61,7 @@ export default function AdminTable() {
             <th>Recommended</th>
             <th>Comments</th>
             <th>Accepted</th>
+            <th>Remarks</th>
           </tr>
         </thead>
         <tbody>
@@ -60,7 +71,6 @@ export default function AdminTable() {
               <td>{input.mobile}</td>
               <td>
                 <Rating value={input.rating} readOnly />
-                {/* <Rating name="read-only" value={in} readOnly /> */}
               </td>
               <td>{input.yesOrNo}</td>
               <td>{input.comments}</td>
@@ -73,17 +83,34 @@ export default function AdminTable() {
                   ) : (
                     <div className="icon">
                       <FaThumbsUp
-                        style={{ color: "green", fontSize: "40px" }}
+                        style={{
+                          color: "green",
+                          fontSize: "40px",
+                          cursor: "pointer",
+                        }}
                         // value={acceptedOrRejected}
                         onClick={() => updateAcceptance(input.id, "Accepted")}
                       />
                       <FaThumbsDown
-                        style={{ color: "red", fontSize: "40px" }}
+                        style={{
+                          color: "red",
+                          fontSize: "40px",
+                          cursor: "pointer",
+                        }}
                         // value={acceptedOrRejected}
                         onClick={() => updateAcceptance(input.id, "Rejected")}
                       />
                     </div>
                   )}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {/* <p onClick={(e) => editEvent(e, singleEvent.id)}>Edit</p> */}
+                  <MdDelete
+                    className="delete-btn"
+                    onClick={(e) => deleteRow(input.id)}
+                  />
                 </div>
               </td>
             </tr>

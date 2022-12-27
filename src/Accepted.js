@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { useParams } from "react-router-dom";
 
-export default function Accepted(value, id, updateAcceptedValue) {
-  const [accepted, setAccepted] = useState(false);
-  const [rejected, setRejected] = useState(false);
-
+export default function Accepted(value, id, params, updateAcceptedValue) {
   return (
     // ternary to show
     <div className="icon">
-      {accepted ? (
+      {params.rows.accepted ? (
         <p>Accepted</p>
-      ) : rejected ? (
+      ) : params.rows.accepted ? (
         <p>Rejected</p>
       ) : (
         <div>

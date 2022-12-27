@@ -36,6 +36,7 @@ export default function Form() {
       yesOrNo,
       comments,
       accepted: "",
+      editOrDelete: "",
     };
     setName("");
     setMobile("");
