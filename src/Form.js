@@ -21,6 +21,7 @@ export default function Form() {
   const [rating, setRating] = useState(1);
   const [comments, setComments] = useState("");
   const [yesOrNo, setYesOrNo] = useState("");
+  const [style, setStyle] = useState(false);
 
   const navigate = useNavigate();
 
@@ -46,6 +47,7 @@ export default function Form() {
     // navigate("/AdminPage");
     navigate("/AdminTable");
   };
+
   return (
     <div>
       <h1>Feedback Form</h1>
@@ -70,7 +72,7 @@ export default function Form() {
             placeholder="Enter your Mobile Number"
           />
         </div>
-        {/* <BasicRating value={rating} /> */}
+
         <div className="row">
           <label>How would you rate our service?</label>
           <Box
@@ -93,15 +95,15 @@ export default function Form() {
           <label>Will you recommend us to Friends?</label>
           <div className="icon">
             <FaThumbsUp
-              style={{ color: "red", fontSize: "50px" }}
+              // style={{ color: setStyle(!style) ? "green" : "black" }}
+              style={{ color: yesOrNo === "yes" ? "green" : "black" }}
               value={yesOrNo}
               onClick={(e) => setYesOrNo("yes")}
-              // onChange={(e, newValue) => {
-              //   setYes(newValue);
-              // }}
             />
             <FaThumbsDown
-              style={{ color: "red", fontSize: "50px" }}
+              // style={{ color: "black", fontSize: "50px" }}
+              // style={{ color: setStyle(!style) ? "green" : "black" }}
+              style={{ color: yesOrNo === "no" ? "red" : "black" }}
               value={yesOrNo}
               onClick={(e) => setYesOrNo("no")}
             />

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import "./App.css";
+import Rating from "@mui/material/Rating";
 
 const getDataFromInputs = () => {
   const data = localStorage.getItem("inputs");
@@ -57,15 +58,18 @@ export default function AdminTable() {
             <tr key={input}>
               <td>{input.name}</td>
               <td>{input.mobile}</td>
-              <td>{input.rating}</td>
+              <td>
+                <Rating value={input.rating} readOnly />
+                {/* <Rating name="read-only" value={in} readOnly /> */}
+              </td>
               <td>{input.yesOrNo}</td>
               <td>{input.comments}</td>
               <td>
                 <div className="icon">
                   {input.accepted === "Accepted" ? (
-                    <p className="text">Accepted</p>
+                    <p className="text-accepted">Accepted</p>
                   ) : input.accepted === "Rejected" ? (
-                    <p className="text">Rejected</p>
+                    <p className="text-rejected">Rejected</p>
                   ) : (
                     <div className="icon">
                       <FaThumbsUp
