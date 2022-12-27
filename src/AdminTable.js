@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import "./App.css";
 
 const getDataFromInputs = () => {
   const data = localStorage.getItem("inputs");
@@ -12,13 +13,31 @@ const getDataFromInputs = () => {
 
 export default function AdminTable() {
   const [inputs, setInputs] = useState(getDataFromInputs());
-  const [acceptedOrRejected, setAcceptedOrRejected] = useState("");
-  // const [clicked, setClicked] = useState(true);
-  // const onClick = () => setClicked(false);
-  // const handleToggleAccepted = () => setClicked(!clicked);
-  // const handleToggleRejected = () => setClicked(!clicked);
-  const [showHideDemo1, setShowHideDemo1] = useState(false);
-  const [showHideDemo2, setShowHideDemo2] = useState(false);
+  // const [acceptedOrRejected, setAcceptedOrRejected] = useState("");
+
+  const updateAcceptance = (id, value) => {
+    console.log("selected ID: " + id);
+    const updatedArray = inputs.map((singleValue) => {
+      console.log(id, singleValue.id);
+      if (singleValue.id === id) {
+        return {
+          id: singleValue.id,
+          name: singleValue.name,
+          mobile: singleValue.mobile,
+          rating: singleValue.rating,
+          yesOrNo: singleValue.yesOrNo,
+          comments: singleValue.comments,
+          accepted: value,
+        };
+      } else {
+        return singleValue;
+      }
+    });
+
+    setInputs(updatedArray);
+    localStorage.setItem("inputs", JSON.stringify(updatedArray));
+  };
+
   return (
     <div className="feedback-container">
       <h1>Feedback Table</h1>
@@ -41,37 +60,27 @@ export default function AdminTable() {
               <td>{input.rating}</td>
               <td>{input.yesOrNo}</td>
               <td>{input.comments}</td>
-              <td>{input.accepted}</td>
               <td>
-                {/* {clicked ? ( */}
                 <div className="icon">
-                  {showHideDemo1 ? (
-                    <p>Accepted</p>
+                  {input.accepted === "Accepted" ? (
+                    <p className="text">Accepted</p>
+                  ) : input.accepted === "Rejected" ? (
+                    <p className="text">Rejected</p>
                   ) : (
-                    <FaThumbsUp
-                      style={{ color: "red", fontSize: "50px" }}
-                      value={acceptedOrRejected}
-                      // onClick={() => setAcceptedOrRejected("Accepted")}
-                      // onClick={() => setClicked("Accepted")}
-                      onClick={() => setShowHideDemo1("showHideDemo1")}
-                    />
-                  )}
-                  {showHideDemo2 ? (
-                    <p>Rejected</p>
-                  ) : (
-                    <FaThumbsDown
-                      style={{ color: "red", fontSize: "50px" }}
-                      value={acceptedOrRejected}
-                      // onClick={() => setAcceptedOrRejected("Rejected")}
-                      // onClick={onClick}
-                      // onClick={() => setClicked("Rejected")}
-                      onClick={() => setShowHideDemo2("showHideDemo2")}
-                    />
+                    <div className="icon">
+                      <FaThumbsUp
+                        style={{ color: "green", fontSize: "40px" }}
+                        // value={acceptedOrRejected}
+                        onClick={() => updateAcceptance(input.id, "Accepted")}
+                      />
+                      <FaThumbsDown
+                        style={{ color: "red", fontSize: "40px" }}
+                        // value={acceptedOrRejected}
+                        onClick={() => updateAcceptance(input.id, "Rejected")}
+                      />
+                    </div>
                   )}
                 </div>
-                {/* ) : (
-                  <p>Accepted</p>
-                )} */}
               </td>
             </tr>
           ))}

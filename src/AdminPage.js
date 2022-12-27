@@ -57,6 +57,9 @@ const columns = [
         <Accepted
           value={params.rows.accepted}
           id={params.rows.id}
+          // updateAcceptedValue={() =>
+          //   updateAcceptedValue(params.rows.id, "Accepted")
+          // }
           updateAcceptedValue={updateAcceptedValue}
         />
       );
