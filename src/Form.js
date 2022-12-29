@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import BasicRating from "./BasicRating";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import Validation from "./Validation";
 
 const getDataFromInputs = () => {
   const data = localStorage.getItem("inputs");
@@ -22,12 +23,17 @@ export default function Form() {
   const [comments, setComments] = useState("");
   const [yesOrNo, setYesOrNo] = useState("");
   const [style, setStyle] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [dataIsCorrect, setDataIsCorrect] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
     console.log(name, mobile, rating, yesOrNo, comments);
+    setErrors(Validation(inputs));
+    setDataIsCorrect(true);
+
     let newInputs = {
       id: uuidv4(),
       name,
@@ -46,8 +52,15 @@ export default function Form() {
     localStorage.setItem("inputs", JSON.stringify([...inputs, newInputs]));
     console.log(inputs);
     // navigate("/AdminPage");
-    navigate("/AdminTable");
+    // navigate("/AdminTable");
   };
+
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && dataIsCorrect) {
+      alert("signup successfully");
+      navigate("/admintable");
+    }
+  }, [errors]);
 
   return (
     <div>
@@ -63,6 +76,7 @@ export default function Form() {
             placeholder="Enter your Name"
           />
         </div>
+        {errors.name && <p className="error">{errors.name}</p>}
         <div className="row">
           <label>Mobile</label>
           <input
@@ -73,7 +87,7 @@ export default function Form() {
             placeholder="Enter your Mobile Number"
           />
         </div>
-
+        {errors.mobile && <p className="error">{errors.mobile}</p>}
         <div className="row">
           <label>How would you rate our service?</label>
           <Box
@@ -92,24 +106,23 @@ export default function Form() {
             />
           </Box>
         </div>
+        {errors.rating && <p className="error">{errors.rating}</p>}
         <div className="row">
           <label>Will you recommend us to Friends?</label>
           <div className="icon">
             <FaThumbsUp
-              // style={{ color: setStyle(!style) ? "green" : "black" }}
               style={{ color: yesOrNo === "yes" ? "green" : "black" }}
               value={yesOrNo}
               onClick={(e) => setYesOrNo("yes")}
             />
             <FaThumbsDown
-              // style={{ color: "black", fontSize: "50px" }}
-              // style={{ color: setStyle(!style) ? "green" : "black" }}
               style={{ color: yesOrNo === "no" ? "red" : "black" }}
               value={yesOrNo}
               onClick={(e) => setYesOrNo("no")}
             />
           </div>
         </div>
+        {errors.yesOrNo && <p className="error">{errors.yesOrNo}</p>}
         <div className="row">
           <label>Comments</label>
           <textarea
@@ -120,6 +133,7 @@ export default function Form() {
             placeholder="Enter your Comments"
           />
         </div>
+        {errors.comments && <p className="error">{errors.comments}</p>}
         <button>Submit</button>
       </form>
     </div>
