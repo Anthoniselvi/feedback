@@ -5,15 +5,6 @@ import "./App.css";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
 
-// const getDataFromInputs = () => {
-//   const data = localStorage.getItem("inputs");
-//   if (data) {
-//     return JSON.parse(data);
-//   } else {
-//     return [];
-//   }
-// };
-
 export default function AdminTable() {
   const [inputs, setInputs] = useState([]);
   // const [acceptedOrRejected, setAcceptedOrRejected] = useState("");
@@ -43,8 +34,11 @@ export default function AdminTable() {
   };
 
   const deleteRow = (idToDelete) => {
-    console.log(idToDelete);
     console.log(parseInt(idToDelete));
+    // const id = parseInt(idToDelete);
+    // console.log(id);
+    // axios.delete(`http://localhost:2000/feedback?${id}`)
+
     axios
       .delete("http://localhost:2000/feedback", {
         data: {
@@ -126,7 +120,7 @@ export default function AdminTable() {
         </thead>
         <tbody>
           {inputs.map((input) => (
-            <tr key={input}>
+            <tr key={input.id}>
               <td>{input.name}</td>
               <td>{input.mobile}</td>
               <td>
